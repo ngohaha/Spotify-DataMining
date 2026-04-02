@@ -1,47 +1,61 @@
 # 🎵 Spotify Data Mining Project
 
-Dự án khai phá dữ liệu Spotify sử dụng **K-Means Clustering** và **FP-Growth Association Rules** để phân tích đặc điểm âm học và phát hiện quy tắc liên kết trong nhạc.
+Dự án khai phá dữ liệu Spotify sử dụng **Decision Trees**, **K-Means Clustering** và **FP-Growth Association Rules** để phân tích đặc điểm âm học và phát hiện quy tắc liên kết trong nhạc.
 
-## 📊 Tổng quan dự án
+## Tổng quan dự án
 
 **Mục tiêu:**
-- Phân cụm bài hát dựa trên đặc trưng âm học (11 features)
-- Khám phá quy tắc liên kết giữa các đặc điểm âm học
-- Phân loại thể loại nhạc dựa trên clustering
-- Rút ra insights về mối quan hệ giữa các tính chất âm nhạc
+- Tiến hành thu thập, làm sạch, trực quan hóa dữ liệu.
+- Phân loại bài hát Hit hay Not Hit dựa trên dữ liệu âm học bằng `Decision Trees`.
+- Phân cụm bài hát dựa trên đặc trưng âm học bằng `K-Means`.
+- Khám phá quy tắc liên kết giữa các đặc điểm âm học bằng `FP-Growth`.
+- Rút ra insights về mối quan hệ giữa các tính chất âm nhạc.
 
 **Dữ liệu:**
-- 4 nguồn từ Kaggle: Track Features, Top Hits, Grammy Awards, Hot Music
-- Kết hợp với Spotify Audio Features API
-- Tổng: 162,422 bài hát với 326 features
+- 1 nguồn chính từ Kaggle: spotify-global-music-dataset-20092025.
+- 4 nguồn bổ sung từ Kaggle (bổ sung đặc trưng còn thiếu cho nguồn chính): Track Features, Top Hits, Grammy Awards, Hot Music.
+- Tổng: 162,422 bài hát với 326 features.
 
-## 🔄 Quy trình thực hiện (CRISP-DM)
+## Quy trình thực hiện (CRISP-DM)
 
-### 1️⃣ **Integration** (`01_integration.ipynb`)
-- Tải dữ liệu từ 4 nguồn Kaggle
-- Kết nối Spotify API để lấy audio features
+### 1. **Integration** (`01_integration.ipynb`)
+- Tải dữ liệu từ nguồn Kaggle
 - Merge dữ liệu và kiểm tra duplicates
 - **Output:** `data/processed/spotify_merged.csv`
 
-### 2️⃣ **Cleaning** (`02_cleaning.ipynb`)
+### 2. **Cleaning** (`02_cleaning.ipynb`)
 - Loại bỏ giá trị NaN, duplicates
 - Xử lý outliers
 - Chuẩn hóa features (StandardScaler)
 - **Output:** `data/processed/spotify_cleaned.csv`
 
-### 3️⃣ **EDA** (`03_eda.ipynb`)
+### 3. **EDA** (`03_eda.ipynb`)
 - Phân tích thống kê từng feature
-- Trực quan hóa phân phối dữ liệu
-- Kiểm tra tương quan (correlation)
-- Phân tích target variable (is_hit)
+- Phân tích tương quan đa biến
+- Phân tích Dữ liệu phân loại
+- Phân tích xu hướng theo thời gian
 
-### 4️⃣ **Feature Engineering** (`04_feature_engineering.ipynb`)
-- Chọn lọc 11 audio features chính
-- Tạo feature ML-ready (326 tổng features)
-- Chuẩn hóa và scaling
+
+### 4. **Feature Engineering** (`04_feature_engineering.ipynb`)
+- Tạo nhãn `is_hit` cho **Classification**
+- Chuẩn hóa dữ liệu (Scaling) cho **Clustering**
+-  Mã hóa dữ liệu danh mục cho **association rules** 
 - **Output:** `data/processed/spotify_for_ml.csv`
 
-### 5️⃣ **Clustering** (`06_clustering.ipynb`)
+### 5. **Classification** (`05_classification.ipynb`)
+- **Thuật toán:** Decision Trees
+- **Optimization:** 
+  - Xử lý mất cân bằng dữ liệu bằng `class_weight='balanced'`.
+  - Chống trò rỉ dữ liệu bằng cách xóa những cột thừa, chỉ giữa audio features.
+  - Xây dựng mô hình với 100 cây quyết định. 80% dữ liệu train và 20% dữ liệu test.
+- **Output:**
+  - Báo cáo phân loại.
+  - Ma trận nhầm lẫn.
+  - Biểu đồ đặc trưng quan trọng.
+  - File dữ liệu kết quả `data/processed/spotify_with_classification`.
+
+
+### 6. **Clustering** (`06_clustering.ipynb`)
 - **Thuật toán:** K-Means Clustering
 - **Optimization:** Elbow Method + Silhouette Score
 - Visualize clusters bằng PCA 2D
@@ -183,9 +197,6 @@ jupyter notebook
 - cluster_profiles.csv: Tóm tắt đặc điểm từng cluster
 - association_rules_top50.csv: 50 quy tắc mạnh nhất
 - frequent_itemsets.csv: Tất cả frequent itemsets
-
-## 👨‍💻 Tác giả
-**Trần Thanh Trọng** - Data Mining Student @ UTE
 
 ## 📝 Ghi chú
 - Dữ liệu: 12,476 tracks sau cleaning
