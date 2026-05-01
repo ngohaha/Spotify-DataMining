@@ -66,7 +66,7 @@ Dự án khai phá dữ liệu Spotify sử dụng **Decision Trees**, **K-Means
   - `outputs/figures/clustering_pca_2d.png` - PCA visualization
   - `data/processed/spotify_with_clusters.csv` - Dữ liệu có cluster labels
 
-### 6️⃣ **Association Rules** (`07_association_rules.ipynb`)
+### 7 **Association Rules** (`07_association_rules.ipynb`)
 - **Thuật toán:** FP-Growth
 - Categorize audio features (High/Low)
 - Tìm frequent itemsets (min_support=5%)
